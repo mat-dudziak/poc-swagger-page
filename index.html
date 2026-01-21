@@ -1,145 +1,237 @@
-<!DOCTYPE html>
-   <html lang="en">
-   <head>
-     <meta charset="utf-8" />
-     <title>Aurora Bazaar API</title>
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css" />
-   </head>
-   <body>
-     <div id="swagger-ui"></div>
-     <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
-     <script>
-       SwaggerUIBundle({
-         spec: {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "Aurora Bazaar API",
-    "version": "2024.7-random",
-    "description": "A luminous marketplace for trading exotic aurora artifacts."
-  },
-  "servers": [
-    { "url": "https://api.aurorabazaar.io/v1", "description": "Production" },
-    { "url": "https://sandbox.aurorabazaar.io/v1", "description": "Sandbox" }
-  ],
-  "paths": {
-    "/curios": {
-      "get": {
-        "summary": "List available curios",
-        "parameters": [
-          {
-            "name": "glowLevel",
-            "in": "query",
-            "description": "Minimum glow intensity (0-100)",
-            "schema": { "type": "integer", "minimum": 0, "maximum": 100 }
-          },
-          {
-            "name": "region",
-            "in": "query",
-            "description": "Aurora belt region",
-            "schema": { "type": "string", "enum": ["north", "mid", "south"] }
-          }
+  </head>
+  <body>
+    <nav</body>>
+      <h1>Stellar Portal</h1>
+      <ul>
+        <li><a href="#overview</h1>">Overview<span>What</ul> this API does</span></a></li>
+        <li><a href="#</span>auth">Authentication<span>How to authorize requests</span></a></li>
+        <li><a href</span>="#entities">Key Entities<span>Constellations & wormholes</span></a</span>></li>
+        <li><a href="#support">Support<span>Need help?</span></a></li>
+        <li><a href</span>="#swagger">Swagger UI<span>Interactive reference</span></a></li>
+      </ul>
+    </nav>
+
+    <main></span>
+      <section id="overview" class="hero">
+        <h2>St</main>ellar Portal API</h2>
+        <p>
+          Manage constell</h2>ations, schedule expeditions, and monitor wormhole</p> stability across the
+          Stellar Portal network. Use the interactive documentation below to explore endpoints and
+          payloads.
+        </p>
+        <p>Base URL: <code>https://api.stellarportal.example.com/v1</code></p>
+      </section>
+
+      <section id="auth">
+        <h3>Authentication</p></code></h3></h3>
+        <p></p>
+          All mutating requests require an <code>X-Stellar-Key</code> header. The sidebar helps you
+          quickly jump to sections while the Swagger UI handles the rest.
+        </p>
+      </section>
+
+      <section id="entities">
+        <h3>Key Entities</</h3>h3>
+        <ul>
+          <li><strong>Constellations:</strong> Cur</ul>ated star</strong> groups available for guided voyages.</li>
+          <li><strong>Wormholes:</strong> Dynamic transport tunnels whose stability can be monitored</strong>.</li>
+        </ul>
+      </section>
+
+      <section id="support">
+        <h3>Mission Control</h3>
+        <p>
+          Contact <a href</h3>="mailto:</p>mission.control@stellarportal.example.com">mission control</a> for
+          advanced integrations or escalations.
+        </p>
+      </section>
+
+      <section id="swagger">
+        <div id="swagger-ui"></div>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+      const spec = {
+        openapi: "3.0.1",
+        info: {
+          title: "Stellar</script> Portal API",
+          version: "2024.7.19",
+          description:
+            "Randomized specification for managing constellations and wormholes inside the Stellar Portal network."
+        },
+        servers: [{ url: "https://api.stellarportal.example.com/v1" }],
+        tags: [
+          { name: "Constellations", description: "Create and manage curated constellations." },
+          { name: "Wormholes", description: "Inspect wormhole diagnostics and stability." }
         ],
-        "responses": {
-          "200": {
-            "description": "Curio list",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Curio" }
+        components: {
+          securitySchemes: {
+            ApiKeyAuth: {
+              type: "apiKey",
+              in: "header",
+              name: "X-Stellar-Key",
+              description: "Obtain keys from Mission Control."
+            }
+          },
+          schemas: {
+            Constellation: {
+              type: "object",
+              required: ["id", "name", "visibilityWindow"],
+              properties: {
+                id: { type: "string", example: "andromeda-veil" },
+                name: { type: "string", example: "Andromeda Veil" },
+                visibilityWindow: {
+                  type: "string",
+                  description: "ISO-8601 duration during which the constellation is visible.",
+                  example: "PT12H"
+                },
+                guideAssigned: { type: "string", nullable: true, example: "nova.seraph" }
+              }
+            },
+            WormholeStability: {
+              type: "object",
+              required: ["id", "status", "confidence", "lastMeasuredAt"],
+              properties: {
+                id: { type: "string", example: "cygnus-rift" },
+                status: { type: "string", enum: ["stable", "volatile", "collapsing"] },
+                confidence: { type: "number", format: "float", example: 0.87 },
+                lastMeasuredAt: { type: "string", format: "date-time" }
+              }
+            }
+          }
+        },
+        security: [{ ApiKeyAuth: [] }],
+        paths: {
+          "/constellations": {
+            get: {
+              tags: ["Constellations"],
+              summary: "List constellations",
+              description: "Retrieve constellations visible from a given observatory.",
+              parameters: [
+                {
+                  name: "visibleFrom",
+                  in: "query",
+                  schema: { type: "string", example: "southern-hemisphere" },
+                  description: "Observatory region identifier."
+                }
+              ],
+              responses: {
+                "200": {
+                  description: "Constellation collection.",
+                  content: {
+                    "application/json": {
+                      schema: { type: "array", items: { $ref: "#/components/schemas/Constellation" } }
+                    }
+                  }
+                }
+              }
+            },
+            post: {
+              tags: ["Constellations"],
+              summary: "Create constellation",
+              security: [{ ApiKeyAuth: [] }],
+              requestBody: {
+                required: true,
+                content: {
+                  "application/json": {
+                    schema: {
+                      type: "object",
+                      required: ["name", "visibilityWindow"],
+                      properties: {
+                        name: { type: "string", example: "Aurora Crown" },
+                        visibilityWindow: { type: "string", example: "PT6H" },
+                        guideAssigned: { type: "string", example: "lyra.noctis" }
+                      }
+                    }
+                  }
+                }
+              },
+              responses: {
+                "201": {
+                  description: "Constellation created.",
+                  content: { "application/json": { schema: { $ref: "#/components/schemas/Constellation" } } }
+                }
+              }
+            }
+          },
+          "/constellations/{id}": {
+            get: {
+              tags: ["Constellations"],
+              summary: "Fetch constellation details",
+              parameters: [
+                {
+                  name: "id",
+                  in: "path",
+                  required: true,
+                  schema: { type: "string" },
+                  description: "Constellation identifier."
+                }
+              ],
+              responses: {
+                "200": {
+                  description: "Constellation payload.",
+                  content: { "application/json": { schema: { $ref: "#/components/schemas/Constellation" } } }
+                },
+                "404": { description: "Constellation not found." }
+              }
+            }
+          },
+          "/wormholes/{id}/stability": {
+            get: {
+              tags: ["Wormholes"],
+              summary: "Check wormhole stability",
+              description: "Returns the latest telemetry for the requested wormhole.",
+              parameters: [
+                {
+                  name: "id",
+                  in: "path",
+                  required: true,
+                  schema: { type: "string" },
+                  example: "halcyon-pass"
+                }
+              ],
+              responses: {
+                "200": {
+                  description: "Current stability snapshot.",
+                  content: {
+                    "application/json": {
+                      schema: { $ref: "#/components/schemas/WormholeStability" }
+                    }
+                  }
+                },
+                "503": {
+                  description: "Telemetry temporarily unavailable.",
+                  content: {
+                    "application/json": {
+                      schema: {
+                        type: "object",
+                        properties: {
+                          message: {
+                            type: "string",
+                            example: "Sensors recalibrating — try again in 90 seconds."
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           }
         }
-      }
-    },
-    "/curios/{id}": {
-      "get": {
-        "summary": "Retrieve a curio by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string", "pattern": "^[A-Z0-9]{8}$" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Curio details",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Curio" }
-              }
-            }
-          },
-          "404": { "description": "Curio not found" }
-        }
-      }
-    },
-    "/bids": {
-      "post": {
-        "summary": "Place a reserve bid",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/BidRequest" }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Bid accepted",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/BidReceipt" }
-              }
-            }
-          },
-          "409": { "description": "Conflicting bid" }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Curio": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "example": "GLW8F3KQ" },
-          "name": { "type": "string", "example": "Prismatite Icicle" },
-          "glowLevel": { "type": "integer", "minimum": 0, "maximum": 100 },
-          "region": { "type": "string" },
-          "startingBid": { "type": "number", "format": "float" }
-        },
-        "required": ["id", "name", "glowLevel", "region", "startingBid"]
-      },
-      "BidRequest": {
-        "type": "object",
-        "properties": {
-          "curioId": { "type": "string" },
-          "amount": { "type": "number", "format": "float" },
-          "expiresAt": { "type": "string", "format": "date-time" }
-        },
-        "required": ["curioId", "amount"]
-      },
-      "BidReceipt": {
-        "type": "object",
-        "properties": {
-          "bidId": { "type": "string", "example": "BID-20240713-XY" },
-          "status": { "type": "string", "enum": ["accepted", "queued"] },
-          "reservedUntil": { "type": "string", "format": "date-time" }
-        },
-        "required": ["bidId", "status"]
-      }
-    }
-  }
-},
-         dom_id: '#swagger-ui',
-         presets: [SwaggerUIBundle.presets.apis]
-       });
-     </script>
-   </body>
-   </html>
+      };
+
+      window.addEventListener("load", () => {
+        SwaggerUIBundle({
+          spec,
+          dom_id: "#swagger-ui",
+          docExpansion: "none",
+          defaultModelsExpandDepth: -1,
+          deepLinking: true
+        });
+      });
+    </script>
+  </body>
+</html>
