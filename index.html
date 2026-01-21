@@ -1,339 +1,363 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Aurora Orbit API Console</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css" />
-    <style>
-      :root {
-        color-scheme: dark;
-      }
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-        background: #0c1220;
-        color: #e9f0ff;
-        display: flex;
-        min-height: 100vh;
-      }
-      nav {
-        width: 280px;
-        background: linear-gradient(180deg, #121a30, #0a0f1b);
-        padding: 2rem 1.5rem;
-        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
-        position: sticky;
-        top: 0;
-        align-self: flex-start;
-        height: 100vh;
-        overflow-y: auto;
-      }
-      nav h2 {
-        margin-top: 0;
-        font-size: 1.15rem;
-        letter-spacing: 0.05em;
-        color: #7de1ff;
-      }
-      nav ul {
-        list-style: none;
-        padding: 0;
-      }
-      nav li {
-        margin: 0.7rem 0;
-      }
-      nav a {
-        color: #d3e8ff;
-        text-decoration: none;
-        padding: 0.3rem 0.2rem;
-        display: block;
-        border-radius: 4px;
-        transition: background 0.2s;
-      }
-      nav a:hover {
-        background: rgba(125, 225, 255, 0.15);
-      }
-      main {
-        flex: 1;
-        padding: 2rem 3rem;
-      }
-      section {
-        margin-bottom: 3rem;
-      }
-      h1 {
-        margin-top: 0;
-      }
-      #swagger-ui {
-        background: #fff;
-        border-radius: 12px;
-        padding: 1rem;
-        color: #000;
-      }
-      .card {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 1rem 1.5rem;
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(125, 225, 255, 0.15);
-      }
-      .badge {
-        display: inline-block;
-        padding: 0.15rem 0.45rem;
-        border-radius: 999px;
-        background: rgba(125, 225, 255, 0.2);
-        color: #7de1ff;
-        font-size: 0.75rem;
-        letter-spacing: 0.03em;
-      }
-    </style>
-  </head>
-  <body>
-    <nav>
-      <h2>Aurora Orbit</h2>
-      <ul>
-        <li><a href="#overview">Mission Overview</a></li>
-        <li><a href="#endpoints">Highlighted Endpoints</a></li>
-        <li><a href="#swagger">Interactive Spec</a></li>
-        <li><a href="#contact">Command Links</a></li>
-      </ul>
-      <div class="card">
-        <div class="badge">Status</div>
-        <p style="margin:0.6rem 0 0;">Orbit Lane: Zephyr-7<br />Last sync: 17:32 UTC</p>
-      </div>
-      <div class="card">
-        <div class="badge">Credentials</div>
-        <p style="margin:0.6rem 0 0;">Use service token `orbital-relay-92` for sandbox calls.</p>
-      </div>
-    </nav>
-
-    <main>
-      <section id="overview">
-        <h1>Aurora Orbit Relay API</h1>
-        <p>
-          The Aurora Orbit Relay connects merchant flotillas to the spectral exchange grid.
-          Use this console to explore endpoints for manifest ingestion, beacon telemetry,
-          and aurora-credit settlement workflows.
-        </p>
-      </section>
-
-      <section id="endpoints">
-        <h2>Highlighted Endpoints</h2>
-        <div class="card">
-          <strong>GET /relays</strong>
-          <p>Scan the relay lattice for active nodes. Filter by solar-biome or flux threshold.</p>
-        </div>
-        <div class="card">
-          <strong>POST /manifests</strong>
-          <p>Submit encrypted cargo manifests for routing through the prism corridor.</p>
-        </div>
-        <div class="card">
-          <strong>POST /credits/settle</strong>
-          <p>Finalize aurora-credit swaps using quantum hash-locks.</p>
-        </div>
-      </section>
-
-      <section id="swagger">
-        <h2>Interactive Spec</h2>
-        <div id="swagger-ui"></div>
-      </section>
-
-      <section id="contact">
-        <h2>Command Links</h2>
-        <p>
-          • Incident desk: <a href="mailto:relay.ops@auroraorbit.io">relay.ops@auroraorbit.io</a><br />
-          • Operations bridge: +48 22 000 1122<br />
-          • Key fingerprint: <code>8F:33:92:B1:A9:EE:77:4B</code>
-        </p>
-      </section>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
-    <script>
-      const spec = {
-        "openapi": "3.1.0",
-        "info": {
-          "title": "Aurora Orbit Relay API",
-          "version": "2024.9-rand",
-          "description": "Controls access to orbit relays, manifests, and aurora-credit settlements."
-        },
-        "servers": [
-          { "url": "https://orbit.aurora/api/v1", "description": "Production Lattice" },
-          { "url": "https://sandbox.orbit.aurora/api/v1", "description": "Sandbox Lattice" }
-        ],
-        "paths": {
-          "/relays": {
-            "get": {
-              "summary": "List available relays",
-              "parameters": [
-                { "name": "biome", "in": "query", "schema": { "type": "string", "enum": ["solar", "lunar", "umbra"] } },
-                { "name": "minFlux", "in": "query", "schema": { "type": "integer", "minimum": 0, "maximum": 9000 } }
-              ],
-              "responses": {
-                "200": {
-                  "description": "Relay collection",
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "type": "array",
-                        "items": { "$ref": "#/components/schemas/Relay" }
-                      }
-                    }
-                  }
-                }
-              }
+    <head>
+        <meta charset="utf-8" />
+        <title>Aurora Orbit API Console</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css"
+        />
+        <style>
+            :root {
+                color-scheme: dark;
             }
-          },
-          "/relays/{relayId}/telemetry": {
-            "get": {
-              "summary": "Relay telemetry snapshot",
-              "parameters": [
-                {
-                  "name": "relayId",
-                  "in": "path",
-                  "required": true,
-                  "schema": { "type": "string", "pattern": "^RL-[0-9A-F]{6}$" }
-                }
-              ],
-              "responses": {
-                "200": {
-                  "description": "Telemetry stream",
-                  "content": {
-                    "application/json": {
-                      "schema": { "$ref": "#/components/schemas/Telemetry" }
-                    }
-                  }
-                },
-                "404": { "description": "Relay not found" }
-              }
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                background: #0c1220;
+                color: #e9f0ff;
+                display: flex;
+                min-height: 100vh;
             }
-          },
-          "/manifests": {
-            "post": {
-              "summary": "Submit a cargo manifest",
-              "requestBody": {
-                "required": true,
-                "content": {
-                  "application/json": {
-                    "schema": { "$ref": "#/components/schemas/Manifest" }
-                  }
-                }
-              },
-              "responses": {
-                "201": {
-                  "description": "Manifest accepted",
-                  "content": {
-                    "application/json": {
-                      "schema": { "$ref": "#/components/schemas/ManifestReceipt" }
-                    }
-                  }
-                },
-                "409": { "description": "Duplicate manifest" }
-              }
+            nav {
+                width: 280px;
+                background: linear-gradient(180deg, #121a30, #0a0f1b);
+                padding: 2rem 1.5rem;
+                box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
+                position: sticky;
+                top: 0;
+                align-self: flex-start;
+                height: 100vh;
+                overflow-y: auto;
             }
-          },
-          "/credits/settle": {
-            "post": {
-              "summary": "Settle aurora credits",
-              "requestBody": {
-                "required": true,
-                "content": {
-                  "application/json": {
-                    "schema": { "$ref": "#/components/schemas/SettlementRequest" }
-                  }
-                }
-              },
-              "responses": {
-                "202": {
-                  "description": "Settlement enqueued",
-                  "content": {
-                    "application/json": {
-                      "schema": { "$ref": "#/components/schemas/SettlementStatus" }
-                    }
-                  }
-                }
-              }
+            nav h2 {
+                margin-top: 0;
+                font-size: 1.15rem;
+                letter-spacing: 0.05em;
+                color: #7de1ff;
             }
-          }
-        },
-        "components": {
-          "schemas": {
-            "Relay": {
-              "type": "object",
-              "properties": {
-                "relayId": { "type": "string", "example": "RL-FF00AC" },
-                "biome": { "type": "string" },
-                "fluxLevel": { "type": "integer" },
-                "status": { "type": "string", "enum": ["online", "maintenance", "degraded"] }
-              },
-              "required": ["relayId", "biome", "fluxLevel", "status"]
-            },
-            "Telemetry": {
-              "type": "object",
-              "properties": {
-                "relayId": { "type": "string" },
-                "timestamp": { "type": "string", "format": "date-time" },
-                "temperature": { "type": "number" },
-                "flux": { "type": "number" },
-                "alerts": {
-                  "type": "array",
-                  "items": { "type": "string" }
-                }
-              }
-            },
-            "Manifest": {
-              "type": "object",
-              "properties": {
-                "manifestId": { "type": "string" },
-                "originPort": { "type": "string" },
-                "destinationPort": { "type": "string" },
-                "containers": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Container" }
-                }
-              },
-              "required": ["manifestId", "originPort", "destinationPort", "containers"]
-            },
-            "Container": {
-              "type": "object",
-              "properties": {
-                "containerId": { "type": "string" },
-                "massKg": { "type": "number" },
-                "commodity": { "type": "string" }
-              }
-            },
-            "ManifestReceipt": {
-              "type": "object",
-              "properties": {
-                "manifestId": { "type": "string" },
-                "status": { "type": "string" },
-                "routeSlot": { "type": "string" }
-              }
-            },
-            "SettlementRequest": {
-              "type": "object",
-              "properties": {
-                "ledgerId": { "type": "string" },
-                "amount": { "type": "number", "format": "float" },
-                "hashLock": { "type": "string" }
-              },
-              "required": ["ledgerId", "amount", "hashLock"]
-            },
-            "SettlementStatus": {
-              "type": "object",
-              "properties": {
-                "ledgerId": { "type": "string" },
-                "status": { "type": "string", "enum": ["pending", "cleared", "rejected"] },
-                "eta": { "type": "string", "format": "date-time" }
-              }
+            nav ul {
+                list-style: none;
+                padding: 0;
             }
-          }
-        }
-      };
+            nav li {
+                margin: 0.7rem 0;
+            }
+            nav a {
+                color: #d3e8ff;
+                text-decoration: none;
+                padding: 0.3rem 0.2rem;
+                display: block;
+                border-radius: 4px;
+                transition: background 0.2s;
+            }
+            nav a:hover {
+                background: rgba(125, 225, 255, 0.15);
+            }
+            main {
+                flex: 1;
+                padding: 2rem 3rem;
+            }
+            section {
+                margin-bottom: 3rem;
+            }
+            h1 {
+                margin-top: 0;
+            }
+            #swagger-ui {
+                background: #fff;
+                border-radius: 12px;
+                padding: 1rem;
+                color: #000;
+            }
+            .card {
+                background: rgba(255, 255, 255, 0.05);
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+                border: 1px solid rgba(125, 225, 255, 0.15);
+            }
+            .badge {
+                display: inline-block;
+                padding: 0.15rem 0.45rem;
+                border-radius: 999px;
+                background: rgba(125, 225, 255, 0.2);
+                color: #7de1ff;
+                font-size: 0.75rem;
+                letter-spacing: 0.03em;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <h2>Aurora Orbit</h2>
+            <ul>
+                <li><a href="#overview">Mission Overview</a></li>
+                <li><a href="#endpoints">Highlighted Endpoints</a></li>
+                <li><a href="#swagger">Interactive Spec</a></li>
+                <li><a href="#contact">Command Links</a></li>
+            </ul>
+            <div class="card">
+                <div class="badge">Status</div>
+                <p style="margin: 0.6rem 0 0">
+                    Orbit Lane: Zephyr-7<br />Last sync: 17:32 UTC
+                </p>
+            </div>
+            <div class="card">
+                <div class="badge">Credentials</div>
+                <p style="margin: 0.6rem 0 0">
+                    Use service token `orbital-relay-92` for sandbox calls.
+                </p>
+            </div>
+        </nav>
 
-      SwaggerUIBundle({
-        spec,
-        dom_id: '#swagger-ui',
-        presets: [SwaggerUIBundle.presets.apis],
-        layout: "BaseLayout"
-      });
-    </script>
-  </body>
+        <main>
+            <section id="overview">
+                <h1>Aurora Orbit Relay API</h1>
+                <p>
+                    The Aurora Orbit Relay connects merchant flotillas to the
+                    spectral exchange grid. Use this console to explore
+                    endpoints for manifest ingestion, beacon telemetry, and
+                    aurora-credit settlement workflows.
+                </p>
+            </section>
+
+            <section id="endpoints">
+                <h2>Highlighted Endpoints</h2>
+                <div class="card">
+                    <strong>GET /relays</strong>
+                    <p>
+                        Scan the relay lattice for active nodes. Filter by
+                        solar-biome or flux threshold.
+                    </p>
+                </div>
+                <div class="card">
+                    <strong>POST /manifests</strong>
+                    <p>
+                        Submit encrypted cargo manifests for routing through the
+                        prism corridor.
+                    </p>
+                </div>
+                <div class="card">
+                    <strong>POST /credits/settle</strong>
+                    <p>
+                        Finalize aurora-credit swaps using quantum hash-locks.
+                    </p>
+                </div>
+            </section>
+
+            <section id="swagger">
+                <h2>Interactive Spec</h2>
+                <div id="swagger-ui"></div>
+            </section>
+
+            <section id="contact">
+                <h2>Command Links</h2>
+                <p>
+                    • Incident desk:
+                    <a href="mailto:relay.ops@auroraorbit.io"
+                        >relay.ops@auroraorbit.io</a
+                    ><br />
+                    • Operations bridge: +48 22 000 1122<br />
+                    • Key fingerprint: <code>8F:33:92:B1:A9:EE:77:4B</code>
+                </p>
+            </section>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+        <script>
+            // const spec = {
+            //   "openapi": "3.1.0",
+            //   "info": {
+            //     "title": "Aurora Orbit Relay API",
+            //     "version": "2024.9-rand",
+            //     "description": "Controls access to orbit relays, manifests, and aurora-credit settlements."
+            //   },
+            //   "servers": [
+            //     { "url": "https://orbit.aurora/api/v1", "description": "Production Lattice" },
+            //     { "url": "https://sandbox.orbit.aurora/api/v1", "description": "Sandbox Lattice" }
+            //   ],
+            //   "paths": {
+            //     "/relays": {
+            //       "get": {
+            //         "summary": "List available relays",
+            //         "parameters": [
+            //           { "name": "biome", "in": "query", "schema": { "type": "string", "enum": ["solar", "lunar", "umbra"] } },
+            //           { "name": "minFlux", "in": "query", "schema": { "type": "integer", "minimum": 0, "maximum": 9000 } }
+            //         ],
+            //         "responses": {
+            //           "200": {
+            //             "description": "Relay collection",
+            //             "content": {
+            //               "application/json": {
+            //                 "schema": {
+            //                   "type": "array",
+            //                   "items": { "$ref": "#/components/schemas/Relay" }
+            //                 }
+            //               }
+            //             }
+            //           }
+            //         }
+            //       }
+            //     },
+            //     "/relays/{relayId}/telemetry": {
+            //       "get": {
+            //         "summary": "Relay telemetry snapshot",
+            //         "parameters": [
+            //           {
+            //             "name": "relayId",
+            //             "in": "path",
+            //             "required": true,
+            //             "schema": { "type": "string", "pattern": "^RL-[0-9A-F]{6}$" }
+            //           }
+            //         ],
+            //         "responses": {
+            //           "200": {
+            //             "description": "Telemetry stream",
+            //             "content": {
+            //               "application/json": {
+            //                 "schema": { "$ref": "#/components/schemas/Telemetry" }
+            //               }
+            //             }
+            //           },
+            //           "404": { "description": "Relay not found" }
+            //         }
+            //       }
+            //     },
+            //     "/manifests": {
+            //       "post": {
+            //         "summary": "Submit a cargo manifest",
+            //         "requestBody": {
+            //           "required": true,
+            //           "content": {
+            //             "application/json": {
+            //               "schema": { "$ref": "#/components/schemas/Manifest" }
+            //             }
+            //           }
+            //         },
+            //         "responses": {
+            //           "201": {
+            //             "description": "Manifest accepted",
+            //             "content": {
+            //               "application/json": {
+            //                 "schema": { "$ref": "#/components/schemas/ManifestReceipt" }
+            //               }
+            //             }
+            //           },
+            //           "409": { "description": "Duplicate manifest" }
+            //         }
+            //       }
+            //     },
+            //     "/credits/settle": {
+            //       "post": {
+            //         "summary": "Settle aurora credits",
+            //         "requestBody": {
+            //           "required": true,
+            //           "content": {
+            //             "application/json": {
+            //               "schema": { "$ref": "#/components/schemas/SettlementRequest" }
+            //             }
+            //           }
+            //         },
+            //         "responses": {
+            //           "202": {
+            //             "description": "Settlement enqueued",
+            //             "content": {
+            //               "application/json": {
+            //                 "schema": { "$ref": "#/components/schemas/SettlementStatus" }
+            //               }
+            //             }
+            //           }
+            //         }
+            //       }
+            //     }
+            //   },
+            //   "components": {
+            //     "schemas": {
+            //       "Relay": {
+            //         "type": "object",
+            //         "properties": {
+            //           "relayId": { "type": "string", "example": "RL-FF00AC" },
+            //           "biome": { "type": "string" },
+            //           "fluxLevel": { "type": "integer" },
+            //           "status": { "type": "string", "enum": ["online", "maintenance", "degraded"] }
+            //         },
+            //         "required": ["relayId", "biome", "fluxLevel", "status"]
+            //       },
+            //       "Telemetry": {
+            //         "type": "object",
+            //         "properties": {
+            //           "relayId": { "type": "string" },
+            //           "timestamp": { "type": "string", "format": "date-time" },
+            //           "temperature": { "type": "number" },
+            //           "flux": { "type": "number" },
+            //           "alerts": {
+            //             "type": "array",
+            //             "items": { "type": "string" }
+            //           }
+            //         }
+            //       },
+            //       "Manifest": {
+            //         "type": "object",
+            //         "properties": {
+            //           "manifestId": { "type": "string" },
+            //           "originPort": { "type": "string" },
+            //           "destinationPort": { "type": "string" },
+            //           "containers": {
+            //             "type": "array",
+            //             "items": { "$ref": "#/components/schemas/Container" }
+            //           }
+            //         },
+            //         "required": ["manifestId", "originPort", "destinationPort", "containers"]
+            //       },
+            //       "Container": {
+            //         "type": "object",
+            //         "properties": {
+            //           "containerId": { "type": "string" },
+            //           "massKg": { "type": "number" },
+            //           "commodity": { "type": "string" }
+            //         }
+            //       },
+            //       "ManifestReceipt": {
+            //         "type": "object",
+            //         "properties": {
+            //           "manifestId": { "type": "string" },
+            //           "status": { "type": "string" },
+            //           "routeSlot": { "type": "string" }
+            //         }
+            //       },
+            //       "SettlementRequest": {
+            //         "type": "object",
+            //         "properties": {
+            //           "ledgerId": { "type": "string" },
+            //           "amount": { "type": "number", "format": "float" },
+            //           "hashLock": { "type": "string" }
+            //         },
+            //         "required": ["ledgerId", "amount", "hashLock"]
+            //       },
+            //       "SettlementStatus": {
+            //         "type": "object",
+            //         "properties": {
+            //           "ledgerId": { "type": "string" },
+            //           "status": { "type": "string", "enum": ["pending", "cleared", "rejected"] },
+            //           "eta": { "type": "string", "format": "date-time" }
+            //         }
+            //       }
+            //     }
+            //   }
+            // };
+
+            SwaggerUIBundle({
+              // spec,
+              url: './openapi.json'
+              dom_id: '#swagger-ui',
+              presets: [SwaggerUIBundle.presets.apis],
+              layout: "BaseLayout"
+            });
+        </script>
+    </body>
 </html>
