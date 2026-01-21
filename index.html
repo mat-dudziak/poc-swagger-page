@@ -1,398 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head></head>
-    <meta charset="UTF-8" />
-    <title>St</title>ellar Portal API · Swagger UI</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
-    <style></style>
+  <head>
+    <meta charset="utf-8" />
+    <title>Aurora Orbit API Console</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css" />
+    <style>
       :root {
         color-scheme: dark;
-        --bg: #05060a;
-        --panel: #11131a;
-        --border: rgba(255, 255, 255, 0.08);
-        --accent: #f7b538;
-        --muted: #b2b9ce;
-        --text: #f7f9ff;
-        --nav-width: 260px;
       }
-
-      * {
-        box-sizing: border-box;
-      }
-
       body {
         margin: 0;
-        font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-        background: var(--bg);
-        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: #0c1220;
+        color: #e9f0ff;
         display: flex;
-      }
-
-      nav {
-        width: var(--nav-width);
-        height: 100vh;
-        position: sticky;
-        top: 0;
-        background: var(--panel);
-        border-right: 1px solid var(--border);
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-      }
-
-      nav h1 {
-        margin: 0;
-        font-size: 1.1rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--accent);
-      }
-
-      nav ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-      }
-
-      nav a {
-        text-decoration: none;
-        color: var(--text);
-        padding: 0.55rem 0.75rem;
-        border-radius: 0.5rem;
-        display: block;
-        transition: background 150ms ease;
-      }
-
-      nav a span {
-        display: block;
-        font-size: 0.8rem;
-        color: var(--muted);
-      }
-
-      nav a:hover,
-      nav a:focus {
-        background: rgba(247, 181, 56, 0.12);
-      }
-
-      main {
-        flex: 1;
-        padding: 2.5rem;
         min-height: 100vh;
       }
-
-      .hero {
-        background: radial-gradient(circle at top left, rgba(247, 181, 56, 0.2), transparent),
-          var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 1.25rem;
-        padding: 2rem;
-        margin-bottom: 2.5rem;
+      nav {
+        width: 280px;
+        background: linear-gradient(180deg, #121a30, #0a0f1b);
+        padding: 2rem 1.5rem;
+        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
+        height: 100vh;
+        overflow-y: auto;
       }
-
-      .hero h2 {
-        margin: 0 0 0.75rem;
-        font-size: 2.2rem;
-        color: var(--accent);
+      nav h2 {
+        margin-top: 0;
+        font-size: 1.15rem;
+        letter-spacing: 0.05em;
+        color: #7de1ff;
       }
-
-      .hero p {
-        margin: 0.25rem 0;
-        color: var(--muted);
-        line-height: 1.5;
+      nav ul {
+        list-style: none;
+        padding: 0;
       }
-
-      .hero code {
-        background: rgba(255, 255, 255, 0.07);
-        padding: 0.1rem 0.4rem;
-        border-radius: 0.35rem;
-        color: var(--text);
+      nav li {
+        margin: 0.7rem 0;
       }
-
+      nav a {
+        color: #d3e8ff;
+        text-decoration: none;
+        padding: 0.3rem 0.2rem;
+        display: block;
+        border-radius: 4px;
+        transition: background 0.2s;
+      }
+      nav a:hover {
+        background: rgba(125, 225, 255, 0.15);
+      }
+      main {
+        flex: 1;
+        padding: 2rem 3rem;
+      }
       section {
-        margin-bottom: 2.5rem;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 1rem;
-        padding: 1.5rem;
+        margin-bottom: 3rem;
       }
-
-      section h3 {
-        margin: 0 0 0.75rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        font-size: 0.95rem;
-        color: var(--muted);
+      h1 {
+        margin-top: 0;
       }
-
-      section ul {
-        margin: 0;
-        padding-left: 1.2rem;
-        color: var(--muted);
-      }
-
       #swagger-ui {
-        border-radius: 1rem;
+        background: #fff;
+        border-radius: 12px;
+        padding: 1rem;
+        color: #000;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(125, 225, 255, 0.15);
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        background: rgba(125, 225, 255, 0.2);
+        color: #7de1ff;
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
       }
     </style>
   </head>
   <body>
-    <</body>nav>
-      <h1></h1>Stellar Portal</h1>
+    <nav>
+      <h2>Aurora Orbit</h2>
       <ul>
-        <</ul>li><a href="#overview">Overview<span>Mission</span> profile & base URL</span></a></li>
-        <li><a href="#auth">Authentication<span>Headers</span> & policies</span></a></li>
-        <li><a href="#entities">Key Entities<span></span>Constellations & wormholes</span></a></li>
-        <li><a href="#ops">Operational Notes<span></span>Rate limits & sandbox</span></a></li>
-        <li><a href="#swagger">Swagger UI<span></span>Interactive reference</span></a></li>
+        <li><a href="#overview">Mission Overview</a></li>
+        <li><a href="#endpoints">Highlighted Endpoints</a></li>
+        <li><a href="#swagger">Interactive Spec</a></li>
+        <li><a href="#contact">Command Links</a></li>
       </ul>
+      <div class="card">
+        <div class="badge">Status</div>
+        <p style="margin:0.6rem 0 0;">Orbit Lane: Zephyr-7<br />Last sync: 17:32 UTC</p>
+      </div>
+      <div class="card">
+        <div class="badge">Credentials</div>
+        <p style="margin:0.6rem 0 0;">Use service token `orbital-relay-92` for sandbox calls.</p>
+      </div>
     </nav>
 
     <main>
-      <section id</main>="overview" class="hero">
-        <h2>St</h2>ellar Portal API</h2>
-        <p></p>
-          The Stellar Portal network coordinates constellations, wormholes, and expedition schedules
-          across the deep-space relay grid. Use this static page when publishing to GitHub Pages for
-          a fully client-side Swagger UI experience.
-        </p>
-        <p></p>Base URL: <code></code>https://api.stellarportal.example.com/v1</code></p>
-      </section>
-
-      <section id="auth">
-        <h3>Authentication</h3></h3>
-        <p></p>
-          All write operations require an <code>X-Stellar-Key</code> header issued by Mission Control.
-          Requests originating from observatory nodes must also include <code>X-Relay-ID</code> so
-          telemetry can be correlated.
+      <section id="overview">
+        <h1>Aurora Orbit Relay API</h1>
+        <p>
+          The Aurora Orbit Relay connects merchant flotillas to the spectral exchange grid.
+          Use this console to explore endpoints for manifest ingestion, beacon telemetry,
+          and aurora-credit settlement workflows.
         </p>
       </section>
 
-      <section id="entities">
-        <h3>Key</h3> Entities</h3>
-        <ul></ul>
-          <li><strong>Constellations</strong></strong> — curated star groups with visibility windows.</li>
-          <li><strong></strong>Wormholes</strong> — transient travel corridors ranked by stability.</li>
-          <li><strong>Rel</strong>ays</strong> — orbital infrastructure that broadcasts navigation signals.</li>
-        </ul>
-      </section>
-
-      <section id="ops">
-        <h3>Operational Notes</h3></h3>
-        <p></p>Sandbox keys are rate limited to 60 requests per minute. Production keys inherit relay-level burst quotas.</p>
+      <section id="endpoints">
+        <h2>Highlighted Endpoints</h2>
+        <div class="card">
+          <strong>GET /relays</strong>
+          <p>Scan the relay lattice for active nodes. Filter by solar-biome or flux threshold.</p>
+        </div>
+        <div class="card">
+          <strong>POST /manifests</strong>
+          <p>Submit encrypted cargo manifests for routing through the prism corridor.</p>
+        </div>
+        <div class="card">
+          <strong>POST /credits/settle</strong>
+          <p>Finalize aurora-credit swaps using quantum hash-locks.</p>
+        </div>
       </section>
 
       <section id="swagger">
+        <h2>Interactive Spec</h2>
         <div id="swagger-ui"></div>
+      </section>
+
+      <section id="contact">
+        <h2>Command Links</h2>
+        <p>
+          • Incident desk: <a href="mailto:relay.ops@auroraorbit.io">relay.ops@auroraorbit.io</a><br />
+          • Operations bridge: +48 22 000 1122<br />
+          • Key fingerprint: <code>8F:33:92:B1:A9:EE:77:4B</code>
+        </p>
       </section>
     </main>
 
-    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <script>
-      const spec</script> = {
-        openapi: "3.0.3",
-        info: {
-          title: "Stellar Portal API",
-          version: "2024.09-random",
-          description:
-            "Randomized OpenAPI specification for publishing a static Swagger UI page with sidebar navigation."
+      const spec = {
+        "openapi": "3.1.0",
+        "info": {
+          "title": "Aurora Orbit Relay API",
+          "version": "2024.9-rand",
+          "description": "Controls access to orbit relays, manifests, and aurora-credit settlements."
         },
-        servers: [
-          { url: "https://api.stellarportal.example.com/v1", description: "Primary production edge" },
-          { url: "https://sandbox.stellarportal.example.com/v1", description: "Sandbox relay" }
+        "servers": [
+          { "url": "https://orbit.aurora/api/v1", "description": "Production Lattice" },
+          { "url": "https://sandbox.orbit.aurora/api/v1", "description": "Sandbox Lattice" }
         ],
-        tags: [
-          { name: "Constellations", description: "Create and manage curated constellation blueprints." },
-          { name: "Relays", description: "Monitor relay health and signal coverage." },
-          { name: "Wormholes", description: "Check wormhole stability metrics." }
-        ],
-        components: {
-          securitySchemes: {
-            ApiKeyAuth: {
-              type: "apiKey",
-              in: "header",
-              name: "X-Stellar-Key",
-              description: "Request a mission key from Mission Control."
+        "paths": {
+          "/relays": {
+            "get": {
+              "summary": "List available relays",
+              "parameters": [
+                { "name": "biome", "in": "query", "schema": { "type": "string", "enum": ["solar", "lunar", "umbra"] } },
+                { "name": "minFlux", "in": "query", "schema": { "type": "integer", "minimum": 0, "maximum": 9000 } }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Relay collection",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/Relay" }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
-          schemas: {
-            Constellation: {
-              type: "object",
-              required: ["id", "name", "visibilityWindow"],
-              properties: {
-                id: { type: "string", example: "aurora-crown" },
-                name: { type: "string", example: "Aurora Crown" },
-                visibilityWindow: { type: "string", example: "2024-10-03T00:00:00Z/2024-10-03T06:00:00Z" },
-                guideAssigned: { type: "string", nullable: true, example: "nova.seraph" }
+          "/relays/{relayId}/telemetry": {
+            "get": {
+              "summary": "Relay telemetry snapshot",
+              "parameters": [
+                {
+                  "name": "relayId",
+                  "in": "path",
+                  "required": true,
+                  "schema": { "type": "string", "pattern": "^RL-[0-9A-F]{6}$" }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Telemetry stream",
+                  "content": {
+                    "application/json": {
+                      "schema": { "$ref": "#/components/schemas/Telemetry" }
+                    }
+                  }
+                },
+                "404": { "description": "Relay not found" }
               }
-            },
-            RelayStatus: {
-              type: "object",
-              required: ["relayId", "state", "signalStrength", "lastHeartbeat"],
-              properties: {
-                relayId: { type: "string", example: "relay-vela-07" },
-                state: { type: "string", enum: ["nominal", "degraded", "offline"] },
-                signalStrength: { type: "integer", minimum: 0, maximum: 100, example: 92 },
-                lastHeartbeat: { type: "string", format: "date-time" }
+            }
+          },
+          "/manifests": {
+            "post": {
+              "summary": "Submit a cargo manifest",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "$ref": "#/components/schemas/Manifest" }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Manifest accepted",
+                  "content": {
+                    "application/json": {
+                      "schema": { "$ref": "#/components/schemas/ManifestReceipt" }
+                    }
+                  }
+                },
+                "409": { "description": "Duplicate manifest" }
               }
-            },
-            WormholeStability: {
-              type: "object",
-              required: ["id", "status", "confidence"],
-              properties: {
-                id: { type: "string", example: "cygnus-rift" },
-                status: { type: "string", enum: ["stable", "volatile", "collapsing"] },
-                confidence: { type: "number", format: "float", example: 0.81 }
+            }
+          },
+          "/credits/settle": {
+            "post": {
+              "summary": "Settle aurora credits",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "$ref": "#/components/schemas/SettlementRequest" }
+                  }
+                }
+              },
+              "responses": {
+                "202": {
+                  "description": "Settlement enqueued",
+                  "content": {
+                    "application/json": {
+                      "schema": { "$ref": "#/components/schemas/SettlementStatus" }
+                    }
+                  }
+                }
               }
             }
           }
         },
-        security: [{ ApiKeyAuth: [] }],
-        paths: {
-          "/constellations": {
-            get: {
-              tags: ["Constellations"],
-              summary: "List constellations",
-              description: "Retrieve curated constellations optionally filtered by hemisphere.",
-              parameters: [
-                {
-                  name: "visibleFrom",
-                  in: "query",
-                  schema: { type: "string", example: "southern-hemisphere" },
-                  description: "Observatory region requesting visibility data."
-                }
-              ],
-              responses: {
-                "200": {
-                  description: "Constellation collection.",
-                  content: {
-                    "application/json": {
-                      schema: { type: "array", items: { $ref: "#/components/schemas/Constellation" } }
-                    }
-                  }
+        "components": {
+          "schemas": {
+            "Relay": {
+              "type": "object",
+              "properties": {
+                "relayId": { "type": "string", "example": "RL-FF00AC" },
+                "biome": { "type": "string" },
+                "fluxLevel": { "type": "integer" },
+                "status": { "type": "string", "enum": ["online", "maintenance", "degraded"] }
+              },
+              "required": ["relayId", "biome", "fluxLevel", "status"]
+            },
+            "Telemetry": {
+              "type": "object",
+              "properties": {
+                "relayId": { "type": "string" },
+                "timestamp": { "type": "string", "format": "date-time" },
+                "temperature": { "type": "number" },
+                "flux": { "type": "number" },
+                "alerts": {
+                  "type": "array",
+                  "items": { "type": "string" }
                 }
               }
             },
-            post: {
-              tags: ["Constellations"],
-              summary: "Create a constellation",
-              security: [{ ApiKeyAuth: [] }],
-              requestBody: {
-                required: true,
-                content: {
-                  "application/json": {
-                    schema: {
-                      type: "object",
-                      required: ["name", "visibilityWindow"],
-                      properties: {
-                        name: { type: "string" },
-                        visibilityWindow: { type: "string" },
-                        guideAssigned: { type: "string" }
-                      }
-                    }
-                  }
+            "Manifest": {
+              "type": "object",
+              "properties": {
+                "manifestId": { "type": "string" },
+                "originPort": { "type": "string" },
+                "destinationPort": { "type": "string" },
+                "containers": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Container" }
                 }
               },
-              responses: {
-                "201": {
-                  description: "Constellation created.",
-                  content: { "application/json": { schema: { $ref: "#/components/schemas/Constellation" } } }
-                }
+              "required": ["manifestId", "originPort", "destinationPort", "containers"]
+            },
+            "Container": {
+              "type": "object",
+              "properties": {
+                "containerId": { "type": "string" },
+                "massKg": { "type": "number" },
+                "commodity": { "type": "string" }
               }
-            }
-          },
-          "/relays": {
-            get: {
-              tags: ["Relays"],
-              summary: "List relay nodes",
-              responses: {
-                "200": {
-                  description: "Array of relay statuses.",
-                  content: {
-                    "application/json": {
-                      schema: { type: "array", items: { $ref: "#/components/schemas/RelayStatus" } }
-                    }
-                  }
-                }
+            },
+            "ManifestReceipt": {
+              "type": "object",
+              "properties": {
+                "manifestId": { "type": "string" },
+                "status": { "type": "string" },
+                "routeSlot": { "type": "string" }
               }
-            }
-          },
-          "/relays/{relayId}/status": {
-            get: {
-              tags: ["Relays"],
-              summary: "Fetch relay status",
-              parameters: [
-                {
-                  name: "relayId",
-                  in: "path",
-                  required: true,
-                  schema: { type: "string" },
-                  description: "Relay identifier."
-                }
-              ],
-              responses: {
-                "200": {
-                  description: "Relay telemetry snapshot.",
-                  content: {
-                    "application/json": {
-                      schema: { $ref: "#/components/schemas/RelayStatus" }
-                    }
-                  }
-                },
-                "404": { description: "Relay not found." }
-              }
-            }
-          },
-          "/wormholes/{id}/stability": {
-            get: {
-              tags: ["Wormholes"],
-              summary: "Check wormhole stability",
-              parameters: [
-                { name: "id", in: "path", required: true, schema: { type: "string" }, example: "halcyon-pass" }
-              ],
-              responses: {
-                "200": {
-                  description: "Current stability metrics.",
-                  content: {
-                    "application/json": {
-                      schema: { $ref: "#/components/schemas/WormholeStability" }
-                    }
-                  }
-                },
-                "503": {
-                  description: "Telemetry temporarily unavailable.",
-                  content: {
-                    "application/json": {
-                      schema: {
-                        type: "object",
-                        properties: {
-                          message: {
-                            type: "string",
-                            example: "Sensors recalibrating. Retry after 90 seconds."
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+            },
+            "SettlementRequest": {
+              "type": "object",
+              "properties": {
+                "ledgerId": { "type": "string" },
+                "amount": { "type": "number", "format": "float" },
+                "hashLock": { "type": "string" }
+              },
+              "required": ["ledgerId", "amount", "hashLock"]
+            },
+            "SettlementStatus": {
+              "type": "object",
+              "properties": {
+                "ledgerId": { "type": "string" },
+                "status": { "type": "string", "enum": ["pending", "cleared", "rejected"] },
+                "eta": { "type": "string", "format": "date-time" }
               }
             }
           }
         }
       };
 
-      window.addEventListener("load", () => {
-        SwaggerUIBundle({
-          spec,
-          dom_id: "#swagger-ui",
-          deepLinking: true,
-          docExpansion: "none",
-          defaultModelsExpandDepth: -1
-        });
+      SwaggerUIBundle({
+        spec,
+        dom_id: '#swagger-ui',
+        presets: [SwaggerUIBundle.presets.apis],
+        layout: "BaseLayout"
       });
     </script>
   </body>
