@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+     <meta charset="utf-8" />
+     <title>Aurora Bazaar API</title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css" />
+   </head>
+   <body>
+     <div id="swagger-ui"></div>
+     <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+     <script>
+       SwaggerUIBundle({
+         spec: {
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Aurora Bazaar API",
+    "version": "2024.7-random",
+    "description": "A luminous marketplace for trading exotic aurora artifacts."
+  },
+  "servers": [
+    { "url": "https://api.aurorabazaar.io/v1", "description": "Production" },
+    { "url": "https://sandbox.aurorabazaar.io/v1", "description": "Sandbox" }
+  ],
+  "paths": {
+    "/curios": {
+      "get": {
+        "summary": "List available curios",
+        "parameters": [
+          {
+            "name": "glowLevel",
+            "in": "query",
+            "description": "Minimum glow intensity (0-100)",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 100 }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "description": "Aurora belt region",
+            "schema": { "type": "string", "enum": ["north", "mid", "south"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Curio list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Curio" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/curios/{id}": {
+      "get": {
+        "summary": "Retrieve a curio by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Z0-9]{8}$" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Curio details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Curio" }
+              }
+            }
+          },
+          "404": { "description": "Curio not found" }
+        }
+      }
+    },
+    "/bids": {
+      "post": {
+        "summary": "Place a reserve bid",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BidRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bid accepted",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BidReceipt" }
+              }
+            }
+          },
+          "409": { "description": "Conflicting bid" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Curio": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "GLW8F3KQ" },
+          "name": { "type": "string", "example": "Prismatite Icicle" },
+          "glowLevel": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "region": { "type": "string" },
+          "startingBid": { "type": "number", "format": "float" }
+        },
+        "required": ["id", "name", "glowLevel", "region", "startingBid"]
+      },
+      "BidRequest": {
+        "type": "object",
+        "properties": {
+          "curioId": { "type": "string" },
+          "amount": { "type": "number", "format": "float" },
+          "expiresAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["curioId", "amount"]
+      },
+      "BidReceipt": {
+        "type": "object",
+        "properties": {
+          "bidId": { "type": "string", "example": "BID-20240713-XY" },
+          "status": { "type": "string", "enum": ["accepted", "queued"] },
+          "reservedUntil": { "type": "string", "format": "date-time" }
+        },
+        "required": ["bidId", "status"]
+      }
+    }
+  }
+},
+         dom_id: '#swagger-ui',
+         presets: [SwaggerUIBundle.presets.apis]
+       });
+     </script>
+   </body>
+   </html>
